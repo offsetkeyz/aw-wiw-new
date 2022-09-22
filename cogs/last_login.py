@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
+""""
+Author: Colin McAllister (https://github.com/offsetkeyz)
+
+This script will query all users from When I Work instance and return a CSV of their last log-in.
+"""
+import sys
+
 
 from dataclasses import field
 from datetime import *
-import json
-import os
-import sys
+import authentication
 import requests
 import csv
 
-token = ''
-
-# Open the configuration json to access API login credentials
-path_to_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config-colin.json')
-if not os.path.isfile(path_to_json):
-    sys.exit("'config.json' not found! Please add it and try again.")
-else:
-    with open(path_to_json) as file:
-        config = json.load(file)
+token = authentication.authenticate_WiW_API()
 
 # Class for each User
 class User:
@@ -38,39 +35,9 @@ class User:
             else:
                 self.wiw_employee_id=int(wiw_employee_id)
 
-
-def authenticate_WiW_API():
-
-    url = "https://api.wheniwork.com/2/login"
-    payload = json.dumps({
-    "username": config['username'], 
-    "password": config['password'] 
-    })
-    headers = {
-    'W-Key': config['API Key'],
-    'Content-Type': 'application/json'
-    }
-    
-    response = requests.request("POST", url, headers=headers, data=payload)
-    try:
-        token = response.json()['token']
-        print("Good to Go!")
-        return token
-    except:
-        print(str(response) + " | Password or API Key Incorrect.")
-        return authenticate_WiW_API()
-
-def get_url_and_headers(token):
-    url = "https://api.wheniwork.com/2/users"
-    headers = {
-    'Host': 'api.wheniwork.com',
-    'Authorization': 'Bearer ' + token, 
-    }
-    return [url, headers]  
-
 def get_all_wiw_users(token):
     all_users = {}
-    url_headers = get_url_and_headers(token)
+    url_headers = authentication.get_url_and_headers(token)
     response = requests.request("GET", url_headers[0], headers=url_headers[1])
     all_users_json = response.json()['users']
     for u in all_users_json:
@@ -79,9 +46,8 @@ def get_all_wiw_users(token):
 
 def main():
     
-    results = get_all_wiw_users(authenticate_WiW_API())
+    results = get_all_wiw_users(token)
     dict_ = {}
-    fields = ['email', 'last_login']
     with open('last_login.csv', 'w') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',')
         for u in results:
