@@ -1,4 +1,6 @@
+
 {
+    "Instructions": "Place the correct API Key, username, and password (all found in lastpass) then rename to config.json",
     "API Key":"",
     "username": "",
     "password":""

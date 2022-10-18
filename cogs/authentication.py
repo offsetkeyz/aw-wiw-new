@@ -5,7 +5,7 @@ import sys
 import requests
 
 # Open the configuration json to access API login credentials
-path_to_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config-colin.json')
+path_to_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
 if not os.path.isfile(path_to_json):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
@@ -33,8 +33,8 @@ def authenticate_WiW_API():
         print(str(response) + " | Password or API Key Incorrect.")
         return authenticate_WiW_API()
 
-def get_url_and_headers(token):
-    url = "https://api.wheniwork.com/2/users"
+def get_url_and_headers(type, token):
+    url = "https://api.wheniwork.com/2/" + str(type)
     headers = {
     'Host': 'api.wheniwork.com',
     'Authorization': 'Bearer ' + token, 
