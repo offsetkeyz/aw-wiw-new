@@ -5,7 +5,7 @@ import sys
 import requests
 
 # Open the configuration json to access API login credentials
-path_to_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
+path_to_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
 if not os.path.isfile(path_to_json):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
