@@ -9,6 +9,8 @@ import json
 import os
 import sys
 from openpyxl import load_workbook
+import authentication
+import requests
 
 token = ''
 
@@ -90,7 +92,7 @@ all_positions = {
 
 def list_all_wiw_users(token):
     all_users = []
-    url_headers = bs_methods.get_url_and_headers('users', token)
+    url_headers = authentication.get_url_and_headers('users', token)
     response = requests.request("GET", url_headers[0], headers=url_headers[1])
     for i in response.json()['users']:
         all_users.append(shift_classes.user(i['first_name'], i['last_name'], i['email'], i['employee_code'], i['positions'], i['role'], i['locations'], i['is_hidden'], i['is_active']))
