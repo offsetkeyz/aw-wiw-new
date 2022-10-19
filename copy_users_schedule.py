@@ -153,7 +153,7 @@ def store_shifts_by_user_id(all_shifts_in):
 
 def delete_all_shifts_for_user(token, start_date, user_id, all_shifts=0):
     def delete_shift(shift_id, token):
-        url_headers = authentication.get_url_and_headers('shifts/' + str(shift_id))
+        url_headers = authentication.get_url_and_headers('shifts/' + str(shift_id), token)
         response = requests.request("DELETE", url_headers[0], headers=url_headers[1])
 
     start_date = start_date - timedelta(hours=15)
@@ -163,7 +163,7 @@ def delete_all_shifts_for_user(token, start_date, user_id, all_shifts=0):
     try: 
         for shift in all_shifts[user_id]:
             try:
-                if shift.start_time >= start_date:
+                if shift.start_time >= start_date.astimezone(pytz.timezone('UTC')):
                     delete_shift(shift.shift_id, token)
             except Exception as f:
                 if shift.start_time >= pytz.timezone('UTC').localize(start_date):
