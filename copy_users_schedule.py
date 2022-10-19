@@ -201,7 +201,9 @@ def copy_users_schedule(user_id_to_copy, new_user_email, start_date, token):
 
     all_shifts_json = get_all_future_shifts_json(token)
     all_shifts = store_shifts_by_user_id(all_shifts_json)
+    print(f"Deleting {new_user_email}'s old shifts")
     delete_all_shifts_for_user(token, start_date, get_user_id_from_email(token,new_user_email), all_shifts)
+    print(f"Copying shifts...")
     for shift in all_shifts[user_id_to_copy]:
         if shift.start_time >= start_date.astimezone(pytz.timezone('UTC')):
             create_duplicate_shift(token, new_user_email, shift.start_time, shift.length, shift.color, shift.notes, shift.location_id, shift.site_id, shift.position_id)
@@ -218,6 +220,7 @@ def main():
     print(f"You are copying {user_to_copy}'s schedule and pasting onto {user_to_paste}'s schedule starting on {start_date}. Is this correct? (Y/N): ")
     r = input()
     if r.strip().lower() not in ['y', 'yes']:
+        print('Copying...')
         return
     copy_users_schedule(get_user_id_from_email(token, user_to_copy), user_to_paste, start_date, token)
 
