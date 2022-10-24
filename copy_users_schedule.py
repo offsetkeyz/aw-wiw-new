@@ -226,7 +226,7 @@ def main():
     if r.strip().lower() not in ['y', 'yes']:
         print("ok bye")
         return
-    print(random.choice(["Ok loozer, lets go.", "Why do you make me work so hard.", "Please contact IT for support. JK I'M GOING OK?!", "LFG", "Please let me sleep for 5 more minutes"]))
+    print(random.choice(["Ok loozer, lets go.", "Why do you make me work so hard.", "Please contact IT for support. JK I'M GOING OK?!", "LFG", "rip in pieces", "peepee poopoo they're lucky to have you.", "Please put on a movie while you wait. You deserve it queen."]))
     copy_users_schedule(get_user_id_from_email(token, user_to_copy), user_to_paste, start_date, token)
 
 if __name__ == "__main__":
