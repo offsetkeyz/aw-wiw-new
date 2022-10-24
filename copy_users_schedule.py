@@ -8,6 +8,7 @@ This script will duplicate a when I work user's schedule froma  certain date.
 from datetime import timedelta
 import datetime
 import json
+import random
 from time import strptime
 
 import pytz
@@ -223,8 +224,9 @@ def main():
     print(f"You are copying {user_to_copy}'s schedule and pasting onto {user_to_paste}'s schedule starting on {start_date}. Is this correct? (Y/N): ")
     r = input()
     if r.strip().lower() not in ['y', 'yes']:
+        print("ok bye")
         return
-    print('Copying...')
+    print(random.choice(["Ok loozer, lets go.", "Why do you make me work so hard.", "Please contact IT for support. JK I'M GOING OK?!", "LFG", "Please let me sleep for 5 more minutes"]))
     copy_users_schedule(get_user_id_from_email(token, user_to_copy), user_to_paste, start_date, token)
 
 if __name__ == "__main__":
