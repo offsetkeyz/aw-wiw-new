@@ -210,7 +210,7 @@ def copy_users_schedule(user_id_to_copy, new_user_email, start_date, token):
         if shift.start_time >= start_date.astimezone(pytz.timezone('UTC')):
             create_duplicate_shift(token, new_user_email, shift.start_time, shift.length, shift.color, shift.notes, shift.location_id, shift.site_id, shift.position_id)
             i = i+1
-    print(f'Copied {i} number of shifts to {new_user_email}.')
+    print(f'Copied {i} shifts to {new_user_email}.')
 
 
 def main():
