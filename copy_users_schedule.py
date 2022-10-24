@@ -215,7 +215,7 @@ def main():
     user_to_copy = get_email()
     print('Enter the email of the user getting a new schedule: ')
     user_to_paste = get_email()
-    print('Enter the date to start copying (DD mmm YYYY) example "06 Sep 2025')
+    print('Enter the date to start copying (DD mmm YYYY) example: 06 Sep 2025')
     start_date = get_start_date()
     print(f"You are copying {user_to_copy}'s schedule and pasting onto {user_to_paste}'s schedule starting on {start_date}. Is this correct? (Y/N): ")
     r = input()
