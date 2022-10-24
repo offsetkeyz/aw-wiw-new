@@ -170,7 +170,7 @@ def delete_all_shifts_for_user(token, start_date, user_id, all_shifts=0):
                 if shift.start_time >= pytz.timezone('UTC').localize(start_date):
                     delete_shift(shift.shift_id, token)
     except Exception as e:
-        print('user has no shifts')
+        print("I'm so miffed, this user has no shifts")
 
 def copy_users_schedule(user_id_to_copy, new_user_email, start_date, token):
     def create_duplicate_shift(token, user_email, start_time, length, color, notes, schedule_id, team_number, position):
