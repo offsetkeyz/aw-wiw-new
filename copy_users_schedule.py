@@ -72,7 +72,7 @@ def get_user_id_from_email(token, user_email):
     try:
         user_id = response.json()['users'][0]['id']
     except:
-        # print("User: " + user_email + " not in When I Work")
+        print(f'Error with user email: {user_email}')
         user_id = 0
     return user_id
 
@@ -204,9 +204,12 @@ def copy_users_schedule(user_id_to_copy, new_user_email, start_date, token):
     print(f"Deleting {new_user_email}'s old shifts")
     delete_all_shifts_for_user(token, start_date, get_user_id_from_email(token,new_user_email), all_shifts)
     print(f"Copying shifts...")
+    i = 0
     for shift in all_shifts[user_id_to_copy]:
         if shift.start_time >= start_date.astimezone(pytz.timezone('UTC')):
             create_duplicate_shift(token, new_user_email, shift.start_time, shift.length, shift.color, shift.notes, shift.location_id, shift.site_id, shift.position_id)
+            i = i+1
+    print(f'Copied {i} number of shifts to {new_user_email}.')
 
 
 def main():
