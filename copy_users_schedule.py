@@ -122,9 +122,9 @@ def get_color_code(color):
         shift_color = '007038'
     return shift_color
 
-def get_all_future_shifts_json(token):    
+def get_all_future_shifts_json(token, start_date):    
 # url_headers = get_url_and_headers('shifts')
-    url_headers = authentication.get_url_and_headers('shifts?start=' + str(datetime.datetime.now()) + "&end=" + str(datetime.datetime.now()+ timedelta(days=360)) + "&unpublished=true", token)
+    url_headers = authentication.get_url_and_headers('shifts?start=' + str(start_date) + "&end=" + str(datetime.datetime.now()+ timedelta(days=360)) + "&unpublished=true", token)
     response = requests.request("GET", url_headers[0], headers=url_headers[1])
     all_shifts = response.json()['shifts']
     return all_shifts
@@ -200,7 +200,7 @@ def copy_users_schedule(user_id_to_copy, new_user_email, start_date, token):
                 success == False
                 i += 1
 
-    all_shifts_json = get_all_future_shifts_json(token)
+    all_shifts_json = get_all_future_shifts_json(token, start_date)
     all_shifts = store_shifts_by_user_id(all_shifts_json)
     print(f"Deleting {new_user_email}'s old shifts")
     delete_all_shifts_for_user(token, start_date, get_user_id_from_email(token,new_user_email), all_shifts)
