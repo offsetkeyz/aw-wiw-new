@@ -40,3 +40,13 @@ def get_url_and_headers(type, token):
     'Authorization': 'Bearer ' + token, 
     }
     return [url, headers]  
+
+def get_schedule_location():
+    return config['Excel Schedule Location']
+
+def get_perks_sheet_location():
+    return config['Perks Template Location']
+
+def get_perks_directory():
+    sb = config['Perks Template Location']
+    return str(config['Perks Template Location'].replace("iSOC Perks - Template.xlsx", ""))

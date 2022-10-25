@@ -15,8 +15,6 @@ import pytz
 import authentication
 import requests
 
-token = 'authentication.authenticate_WiW_API()'
-
 class shift:
     published = False
     acknowledged = False
