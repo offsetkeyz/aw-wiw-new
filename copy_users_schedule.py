@@ -180,14 +180,22 @@ def copy_users_schedule(user_id_to_copy, new_user_email, start_date, token):
     delete_all_shifts_for_user(token, start_date, get_user_id_from_email(token,new_user_email), all_shifts)
     print(f"Copying shifts...")
     i = 0
-    for shift in all_shifts[user_id_to_copy]:
-        if shift.start_time >= start_date.astimezone(pytz.timezone('UTC')):
-            create_duplicate_shift(token, new_user_email, shift.start_time, shift.length, shift.color, shift.notes, shift.location_id, shift.site_id, shift.position_id)
-            i = i+1
+    try:
+        for shift in all_shifts[user_id_to_copy]:
+            if shift.start_time >= start_date.astimezone(pytz.timezone('UTC')):
+                create_duplicate_shift(token, new_user_email, shift.start_time, shift.length, shift.color, shift.notes, shift.location_id, shift.site_id, shift.position_id)
+                i = i+1
+    except Exception as e:
+        print("User being copied has no shifts. This is correct if you're trying to bulk delete shifts.")
     print(f'Copied {i} shifts to {new_user_email}.')
 
 
 def main():
+    print("Have you run 'git pull' in the last 30 minutes?")
+    if input().lower().strip() not in ['y', 'yes']:
+        print('ok go do that')
+        return
+    print('ok then, lets have some fun.')
     token = authentication.authenticate_WiW_API()
     print('Please enter the email of the user you are copying: ')
     user_to_copy = get_email()
