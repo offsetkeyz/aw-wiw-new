@@ -10,33 +10,9 @@ import datetime
 import json
 import random
 from time import strptime
-
 import pytz
-import authentication
+from cogs import authentication, classes
 import requests
-
-class shift:
-    published = False
-    acknowledged = False
-    is_open = False    
-
-    def __init__(self, shift_id, account_id, user_id, location_id, position_id, site_id, start_time, end_time, published, acknowledged, notes, color, is_open) -> None:
-        self.shift_id = shift_id
-        self.account_id=account_id
-        self.user_id=user_id
-        self.location_id=location_id
-        self.position_id=position_id
-        self.site_id=site_id
-        self.start_time=start_time
-        self.end_time=end_time
-        self.published=published
-        self.acknowledged=acknowledged
-        self.notes=notes
-        self.color=color
-        self.acknowledged=acknowledged
-        self.is_open=is_open
-        length_in_seconds = end_time - start_time
-        self.length = length_in_seconds.seconds / 3600
 
 def get_email():
     user_name = input().strip()
@@ -140,7 +116,7 @@ def store_shifts_by_user_id(all_shifts_in):
     for i in all_shifts_in:
         start_time = datetime.datetime.strptime(i['start_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone('UTC'))
         end_time = datetime.datetime.strptime(i['end_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone('UTC'))
-        new_shift = shift(int(i['id']), int(i['account_id']), int(i['user_id']), int(i['location_id']), int(i['position_id']),
+        new_shift = classes.shift(int(i['id']), int(i['account_id']), int(i['user_id']), int(i['location_id']), int(i['position_id']),
                                 int(i['site_id']), start_time, end_time, bool(i['published']), bool(i['acknowledged']), i['notes'], i['color'], bool(i['is_open']))
         if int(i['user_id']) in employee_shifts:
             current_users_shifts = employee_shifts.get(int(i['user_id']))
