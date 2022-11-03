@@ -15,6 +15,8 @@ excel_schedule_workbook = load_workbook(authentication.get_schedule_location())
 date_columns = {}
 all_names = {}
 
+time_zone = 'UTC'
+
 all_wiw_full_names = {} # full name : status
 date_row = 2
 
@@ -114,7 +116,7 @@ def populate_user_in_excel_sheet(user_shifts, schedule_name, user):
                 continue
 
            current_cell.value = shift.length
-           if shift.location_id not in [5227330,5233779] and 0 <= int(datetime.strftime(shift.start_time, '%-H')) <= 6:
+           if shift.location_id not in [5227330,5233779] and 19 <= int(datetime.strftime(shift.start_time, '%-H')) <= 0:
                current_cell.value = str(int(current_cell.value)) + 'N'
            elif shift.location_id not in [5227330,5233779]:
                 current_cell.value = str(int(current_cell.value)) + 'D'
@@ -193,8 +195,8 @@ def get_all_shifts():
     all_shifts = response.json()['shifts']
     employee_shifts = {}
     for i in all_shifts:
-        start_time = datetime.strptime(i['start_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone('UTC'))
-        end_time = datetime.strptime(i['end_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone('UTC'))
+        start_time = datetime.strptime(i['start_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone(time_zone))
+        end_time = datetime.strptime(i['end_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone(time_zone))
         new_shift = classes.shift(int(i['id']), int(i['account_id']), int(i['user_id']), int(i['location_id']), int(i['position_id']),
                                 int(i['site_id']), start_time, end_time, bool(i['published']), bool(i['acknowledged']), i['notes'], i['color'], bool(i['is_open']))
         if int(i['user_id']) in employee_shifts:
@@ -230,8 +232,8 @@ def store_time_off(all_requests):
     requests = {}
     hashed_requests = {}
     for i in all_requests:
-        start_time = datetime.strptime(i['start_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone('UTC'))
-        end_time = datetime.strptime(i['end_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone('UTC'))
+        start_time = datetime.strptime(i['start_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone(time_zone))
+        end_time = datetime.strptime(i['end_time'], '%a, %d %b %Y %H:%M:%S %z').astimezone(pytz.timezone(time_zone))
         new_request = classes.time_off_request(i['id'], i['account_id'],i['user_id'], i['status'],i['type'],i['type_id'], i['hours'], start_time, end_time, 0,i['user_status'],i['type_label'])
         shift_hash = get_shift_hash(new_request)
         if new_request.user_status not in [0,2,3]:
