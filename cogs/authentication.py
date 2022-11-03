@@ -27,7 +27,7 @@ def authenticate_WiW_API():
     response = requests.request("POST", url, headers=headers, data=payload)
     try:
         token = response.json()['token']
-        print("Good to Go!")
+        print(f"Logged in as {config['username']}")
         return token
     except:
         print(str(response) + " | Password or API Key Incorrect.")

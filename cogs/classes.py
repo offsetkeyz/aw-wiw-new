@@ -46,6 +46,19 @@ class shift:
         length_in_seconds = end_time - start_time
         self.length = length_in_seconds.seconds / 3600
 
+# custom object for each employee with attributes for night hours, weekend hours, and meals          
+class employee:
+
+    def __init__(self, name, night_hours, weekend_hours, meals, overtime, row, shifts_worked, stat_hours_in):
+        self.name = name
+        # self.email = email
+        self.night_hours = night_hours
+        self.weekend_hours = weekend_hours
+        self.meals = meals
+        self.overtime = overtime
+        self.row = row
+        self.shifts_worked = shifts_worked
+        self.stat_hours = stat_hours_in
 
 class user:
 
