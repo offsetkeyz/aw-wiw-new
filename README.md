@@ -12,3 +12,4 @@
 ## Copy User's Schedule
 Run this script by navigating to the directory `/aw-wiw-new` and typing `python3 copy_users_schedule.py`
 * You will be prompted for the user who's schedule you wish to copy, the user you are copying to, and the date you would like to start copying.
+* UPDATE: You can now copy one user onto multiple users. Separate their emails by commas.
