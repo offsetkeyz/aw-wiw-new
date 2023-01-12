@@ -15,11 +15,13 @@ from cogs import authentication, classes
 import requests
 
 def get_email():
-    user_name = input().strip()
-    if not user_name.endswith('@arcticwolf.com'):
-        print("Incorrect Format with username: " + user_name)
-        print('Please try again: ')
-        user_name=get_email()
+    user_list = input().split(',')
+    for u in user_list:
+        user_name = u.strip()
+        if not user_name.endswith('@arcticwolf.com'):
+            print("Incorrect Format with username: " + user_name)
+            print('Please try again: ')
+            user_name=get_email()
     return user_name
 
 def get_start_date():
@@ -199,19 +201,26 @@ def main():
     token = authentication.authenticate_WiW_API()
     print('Please enter the email of the user you are copying: ')
     user_to_copy = get_email()
-    print('Enter the email of the user getting a new schedule: ')
-    user_to_paste = get_email()
+    print('Enter the email of the user or users (separated by commas) getting a new schedule: ')
+    # user_to_paste = get_email()
+    user_list = input().split(',')
     print('Enter the date to start copying (DD mmm YYYY) example: 06 Sep 2025')
     start_date = get_start_date()
-    print(f"You are copying {user_to_copy}'s schedule and pasting onto {user_to_paste}'s schedule starting on {start_date}. Is this correct? (Y/N): ")
-    r = input()
-    if r.strip().lower() not in ['y', 'yes']:
-        print("ok bye")
-        return
-    print(random.choice(["Ok loozer, lets go.", "Why do you make me work so hard.", "Please contact IT for support. JK I'M GOING OK?!", "LFG", "rip in pieces", 
-        "peepee poopoo they're lucky to have you.", "Please put on a movie while you wait. You deserve it queen.", "taking a sick day", 
-        "beep boop beep boop - getting paid to poop", 'do you like jazz?', "heck off, I'm doin' a snooze", f"{user_to_paste} probably doesn't even work here anymore and if they do they should be fired."]))
-    copy_users_schedule(get_user_id_from_email(token, user_to_copy), user_to_paste, start_date, token)
+    for u in user_list:
+        user_to_paste = u.strip()
+        while not user_to_paste.endswith('@arcticwolf.com'):
+            print("Incorrect Format with username: " + user_to_paste)
+            print('Please try again: ')
+            user_to_paste=input().strip()
+        print(f"You are copying {user_to_copy}'s schedule and pasting onto {user_to_paste}'s schedule starting on {start_date}. Is this correct? (Y/N): ")
+        r = input()
+        if r.strip().lower() not in ['y', 'yes']:
+            print("ok bye")
+            return
+        print(random.choice(["Ok loozer, lets go.", "Why do you make me work so hard.", "Please contact IT for support. JK I'M GOING OK?!", "LFG", "rip in pieces", 
+            "peepee poopoo they're lucky to have you.", "Please put on a movie while you wait. You deserve it queen.", "taking a sick day", 
+            "beep boop beep boop - getting paid to poop", 'do you like jazz?', "heck off, I'm doin' a snooze", f"{user_to_paste} probably doesn't even work here anymore and if they do they should be fired."]))
+        copy_users_schedule(get_user_id_from_email(token, user_to_copy), user_to_paste, start_date, token)
 
 if __name__ == "__main__":
     main()
